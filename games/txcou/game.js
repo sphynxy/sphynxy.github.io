@@ -38,7 +38,7 @@ function game(iteration){
     }
 
     const random1 = Math.floor(Math.random() * r.length);
-    const random2 = Math.floor(Math.random() * r.length);
+    const random2 = Math.floor(Math.random() * b.length);
 
     if (Math.random() < 0.5){
         cs = 0;
