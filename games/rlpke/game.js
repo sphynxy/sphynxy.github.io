@@ -61,7 +61,7 @@ function init(){
    var gDiv = document.getElementById('gameFrame');
    var btn = document.createElement("button");
 
-   btn.innerHTML = "hey";
+   btn.innerHTML = "start";
    btn.onclick = function() { game(0) };
    btn.id = "startb";
 
