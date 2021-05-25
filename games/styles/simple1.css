@@ -1,3 +1,13 @@
+html {
+    background-color: #ececec;
+    color: #282828;
+    padding-left: 1vw;
+    letter-spacing: 1px;
+}
+a {
+    color: black;
+}
+
 @media (min-width: 768px) {
     body {
         font-family: Arial;
