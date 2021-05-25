@@ -1,0 +1,36 @@
+@media (min-width: 768px) {
+    body {
+        font-family: Arial;
+    }
+    h1 {
+        font-size: 12vw;
+    }
+    h6 {
+        font-size: 10vw;
+    }
+    p, a {
+        font-size: 8vw;
+    }
+    button {
+        font-size: 8vw;
+        width: 100vw;
+    }
+}
+@media (min-width: 1024px) {
+    body {
+        font-family: Arial;
+    }
+    h1 {
+        font-size: 4vw;
+    }
+    h6 {
+        font-size: 3vw;
+    }
+    p, a {
+        font-size: 2vw;
+    }
+    button {
+        font-size: 2vw;
+        width: 15vw;
+    }
+}
