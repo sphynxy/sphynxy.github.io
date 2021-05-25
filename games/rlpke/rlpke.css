@@ -1,3 +1,30 @@
-body {
-    zoom: 3;
+@media (min-width: 768px) {
+    body {
+        font-family: Arial;
+    }
+    h1 {
+        font-size: 12vw;
+    }
+    p {
+        font-size: 8vw;
+    }
+    button {
+        font-size: 8vw;
+        width: 100vw;
+    }
+}
+@media (min-width: 1024px) {
+    body {
+        font-family: Arial;
+    }
+    h1 {
+        font-size: 4vw;
+    }
+    p {
+        font-size: 2vw;
+    }
+    button {
+        font-size: 2vw;
+        width: 15vw;
+    }
 }
