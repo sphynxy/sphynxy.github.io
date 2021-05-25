@@ -16,7 +16,6 @@ function game(iteration){
     function check(side){
 
         if(side == cs){
-            console.log('correct');
             points += 1;
         } else {
             points = 0;
@@ -41,9 +40,6 @@ function game(iteration){
 
     const random1 = Math.floor(Math.random() * r.length);
     const random2 = Math.floor(Math.random() * r.length);
-
-    console.log(r[random1]);
-    console.log(b[random2]);
 
     if (Math.random() < 0.5){
         cs = 0;
