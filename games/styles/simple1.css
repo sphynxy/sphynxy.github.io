@@ -47,6 +47,4 @@ a {
 
 .info p, .info sup {
     font-size-adjust: 0.3;
-    letter-spacing: 0.2px;
-    line-height: 0.1px;
 }
