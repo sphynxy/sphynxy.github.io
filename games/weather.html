@@ -150,6 +150,39 @@
                 pointer-events: none;
                 animation: flicker 0.15s infinite;
             }
+            #scroll-container {
+                position: fixed;
+                top: 81vh;
+                width: 100vw;
+                height:35vh;
+                overflow: hidden;
+                background:rgba(112,120,255,1);
+                border-top: 2px solid white;
+            }
+            p {
+                color: white;
+                font-size: 2em;
+                text-overflow:clip;
+                text-shadow: 2px 2px #000000;
+            }
+
+            #scroll-text {
+                text-align: right;
+
+                transform: translateX(0%);
+
+                animation: my-animation 15s linear infinite;
+            }
+
+            @keyframes my-animation {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+            }
+
         </style >
         <script type="text/javascript">
             
@@ -179,6 +212,11 @@
             <div id="content">
 
             </div>
+        </div>
+        <div id="scroll-container">
+            <p id="scroll-text">
+                You are tuned to the Northern Osean Weather Station.
+            </p>
         </div>
     </body>
 </html>
