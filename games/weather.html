@@ -184,6 +184,7 @@
             }
 
         </style >
+        <audio src="untitled.mp3"></audio>
         <script type="text/javascript">
             
             function check(){
@@ -193,6 +194,8 @@
                 document.getElementById("time").innerHTML = `${time.toUpperCase()}<br>${date.toUpperCase().replace(',', '')}`;
             }
             function init(){
+                const audio = document.querySelector("audio");
+                audio.play();
                 window.setInterval(check, 500);
             }
             window.onload = init;
