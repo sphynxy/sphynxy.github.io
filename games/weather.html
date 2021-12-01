@@ -237,9 +237,51 @@
                 date = now.toLocaleDateString('en-us', { weekday:"short", year:"numeric", month:"short", day:"numeric"})
                 document.getElementById("time").innerHTML = `${time.toUpperCase()}<br>${date.toUpperCase().replace(',', '')}`;
             }
+
+            function getLocation() {
+                if(navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } 
+            }
+
+            function showPosition(position){
+                const xhr = new XMLHttpRequest();
+                xhr.responseType = 'json';
+                xhr.open('GET', `https://api.weather.gov/points/${position.coords.latitude},${position.coords.longitude}`)
+                xhr.send();
+                xhr.onload = () => {
+                    const data = xhr.response;
+                    const forecastUrl = data.properties.forecast;
+                    xhr.open('GET', data.properties.forecastGridData)
+                    xhr.send();
+                    
+                    xhr.onload = () => {
+                        const data = xhr.response;
+                        document.getElementById("temp").innerHTML = ((Math.round(parseFloat(data.properties.apparentTemperature.values[0].value)) * (9/5)) + 32) + '°';
+                        document.getElementById("dewpoint").innerHTML = 'Dewpoint: ' + ((Math.round(parseFloat(data.properties.dewpoint.values[0].value)) * (9/5)) + 32) + '°';
+                        document.getElementById("windchill").innerHTML = 'Wind Chill: ' + ((Math.round(parseFloat(data.properties.windChill.values[0].value)) * (9/5)) + 32) + '°';
+                        document.getElementById("humidity").innerHTML = 'Humidity: ' + Math.round(parseFloat(data.properties.relativeHumidity.values[0].value)) + '%';
+                        //document.getElementById("vis").innerHTML = 'Humidity: ' + Math.round(parseFloat(data.properties.relativeHumidity.values[0].value)) + '%';
+                        var ws = parseFloat(data.properties.windSpeed.values[0].value); //todo convert
+                        
+                        
+                        xhr.open('GET', forecastUrl);
+                        xhr.send();
+                        xhr.onload = () => {
+                            const data = xhr.response;
+                            console.log(data);
+                            document.getElementById("scroll-text").innerHTML = data.properties.periods[0].detailedForecast;
+                            document.getElementById("condition").innerHTML = data.properties.periods[0].shortForecast;
+                            document.getElementById("wind").innerHTML = 'Wind: ' + data.properties.periods[0].windDirection + ' ' + ws;
+                        };
+                    };
+                };
+            }
+
             function init(){
                 //const audio = document.querySelector("audio");
                 //audio.play();
+                getLocation();
                 window.setInterval(check, 500);
             }
             window.onload = init;
