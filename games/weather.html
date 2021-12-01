@@ -261,9 +261,13 @@
             }
             #radar {
                 position:fixed;
+                background-image: url("map.png");
                 margin: 0 auto;
                 left: 15vw;
                 top: 6vh;
+                width:50vw;
+                height: 50vh;
+                background-size: 50vw 50vh;
             }
                     
         </style >
@@ -350,8 +354,8 @@
                 getLocation();
                 window.setInterval(check, 500);
                 window.setInterval(cpage, 10000);
-                setTimeout(aevent, 5000);
-                setTimeout(bevent, 10000);
+                //setTimeout(aevent, 5000);
+                //setTimeout(bevent, 10000);
             }
             window.onload = init;
         </script>
@@ -400,17 +404,18 @@
 
                 <div id="page3" style="display:none;">
                     <h1 id="title">New Fairweather</h1>
-                    <img src="map.png" id="radar">
-                    <h2 id="nfw" style="left: 33vw;position: absolute;font-size: 2em;top: 7vh;">NFW</h2>
-                    <h2 id="shj" style="left: 35vw;position: absolute;font-size: 2em;top: 9vh;">SHJ</h2>
-                    <h2 id="RHF" style="left: 34vw;position: absolute;font-size: 2em;top: 16vh;">RHF</h2>
+                    <div id="radar">
+                        <h2 id="nfw" style="left: 23vw;position: absolute;font-size: 2em;top: 1vh;">NFW</h2>
+                        <h2 id="shj" style="left: 25vw;position: absolute;font-size: 2em;top: 4vh;">SHJ</h2>
+                        <h2 id="RHF" style="left: 25vw;position: absolute;font-size: 2em;top: 12vh;">RHF</h2>
+                    </div>
                 </div>
                 
             </div>
         </div>
         <div id="scroll-container">
             <p id="scroll-text" style="white-space: nowrap;">
-                You are tuned to the Northern Osean Weather Station. --- Your source for all things Weather!
+                You are tuned to the Northern Osean Weather Station. --- Your source for all things Weather! -- Snow showers in the morning will give way to a mixture of rain and snow in the afternoon. High 36F. Winds SSE at 5 to 10 mph. Chance of precip 70%. -- Current conditions at. Fairwether, Fairwether Doppler Station Lat: 89.2° N Lon: 1310.4° W Elev: 23 ft. Light Snow. 29°F. -2°C. Humidity, 75%.
             </p>
         </div>
     </body>
