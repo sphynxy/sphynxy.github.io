@@ -55,6 +55,7 @@
                 z-index: 3;
                 font-size: 3vh;
                 text-shadow: 2px 2px #000000;
+                line-height: 80%;
                 
             }
             #time {
@@ -193,19 +194,19 @@
                 border: 3px solid white;
                 border-radius: 5px;
                 background:rgb(39, 45, 126);
-                left: 5vw;
+                left: 6vw;
                 top: 1vh;
-                height: 5vw;
-                width: 7vw;
+                height: 5.2vw;
+                width: 10vw;
                 z-index:100;
-                
+                box-shadow: 4px 4px 4px 4px black;
             }
 
             #wslogo h1{
                 left:1vw;
                 top:0;
                 color:white;
-                font-size: 1vw;
+                font-size: 2vw;
                 text-align: center;
             }
             h2 {
@@ -252,11 +253,17 @@
 
             @keyframes textflicker {
                 from {
-                    text-shadow: 1px 0 0 #ea36af, -2px 0 0 #75fa69;
+                    text-shadow: 5px 5px black, 1px 0 0 #ea36af, -2px 0 0 #75fa69;
                 }
                 to {
-                    text-shadow: 2px 0.5px 2px #ea36af, -1px -0.5px 2px #75fa69;
+                    text-shadow: 5px 5px black, 2px 0.5px 2px #ea36af, -1px -0.5px 2px #75fa69;
                 }
+            }
+            #radar {
+                position:fixed;
+                margin: 0 auto;
+                left: 15vw;
+                top: 6vh;
             }
                     
         </style >
@@ -310,7 +317,7 @@
                     };
                 };
             }
-
+            var tog = 2;
             function aevent(){
                 document.getElementById("page2").style.display = 'block';
                 document.getElementById("mainaudio").pause();
@@ -322,11 +329,27 @@
                 document.getElementById("mainaudio").play();
             }
 
+            function cpage(){
+                if (tog == 1)
+                {
+                    tog = 2;
+                    document.getElementById("page3").style.display = 'block';
+                    document.getElementById("page1").style.display = 'none';   
+                } else {
+                    tog = 1;
+                    document.getElementById("page1").style.display = 'block';
+                    document.getElementById("page3").style.display = 'none';
+                }
+                
+            }
+
             function init(){
                 //const audio = document.querySelector("audio");
                 //audio.play();
+                cpage();
                 getLocation();
                 window.setInterval(check, 500);
+                window.setInterval(cpage, 10000);
                 setTimeout(aevent, 5000);
                 setTimeout(bevent, 10000);
             }
@@ -357,7 +380,7 @@
         </div>
         <div id="content-container">
             <div id="content">
-                <div id="page1">
+                <div id="page1" style="display:block;">
                     <div class="left">
                         <h2 id="temp">27°</h2>
                         <h2 id="condition">Light Snow</h2>
@@ -365,7 +388,7 @@
                         <h2 id="windcond">Gusts to 32</h2>
                     </div>
                     <div class="right">
-                        <h1 id="title">Dutch Harbor</h1>
+                        <h1 id="title">New Fairweather</h1>
                         <h2 id="humidity">Humidity:     80%</h2>
                         <h2 id="dewpoint">Dewpoint:     21°</h2>
                         <h2 id="ceiling">Ceiling:       9500ft.</h2>
@@ -373,6 +396,14 @@
                         <h2 id="pressure">Pressure: 29.87</h2>
                         <h2 id="windchill">Wind Chill: 13°</h2>
                     </div>
+                </div>
+
+                <div id="page3" style="display:none;">
+                    <h1 id="title">New Fairweather</h1>
+                    <img src="map.png" id="radar">
+                    <h2 id="nfw" style="left: 33vw;position: absolute;font-size: 2em;top: 7vh;">NFW</h2>
+                    <h2 id="shj" style="left: 35vw;position: absolute;font-size: 2em;top: 9vh;">SHJ</h2>
+                    <h2 id="RHF" style="left: 34vw;position: absolute;font-size: 2em;top: 16vh;">RHF</h2>
                 </div>
                 
             </div>
