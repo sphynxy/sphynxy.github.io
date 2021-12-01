@@ -1,11 +1,14 @@
 <!DOCTYPE html>
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=News+Cycle:wght@700&display=swap" rel="stylesheet"> 
         <style type="text/css" media="screen">
             * {
                 margin: 0;
                 padding: 0;
                 border:0;
-                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                font-family: 'News Cycle', sans-serif;
                 font-stretch: ultra-condensed;
             }
             body {
@@ -203,8 +206,29 @@
                 font-size: 1vw;
                 text-align: center;
             }
+            h2 {
+                font-size: 400%;
+                color:white;
+                text-shadow: 4px 4px black;
+            }
+            #page1{
+                position:fixed;
+                top:3vh;
+                left: 2vw;
+            }
+            #title {
+                position:fixed;
+            }
+            .left{
+                position:fixed;
+            }
+            .right{
+                position:fixed;
+                left:40vw;
+            }
+                    
         </style >
-        <audio src="untitled.mp3"></audio>
+        <audio src="dhr.mp3" controls autoplay style="position:absolute;"></audio>
         <script type="text/javascript">
             
             function check(){
@@ -214,15 +238,15 @@
                 document.getElementById("time").innerHTML = `${time.toUpperCase()}<br>${date.toUpperCase().replace(',', '')}`;
             }
             function init(){
-                const audio = document.querySelector("audio");
-                audio.play();
+                //const audio = document.querySelector("audio");
+                //audio.play();
                 window.setInterval(check, 500);
             }
             window.onload = init;
         </script>
     </head>
     <body>
-        <div class="crt"></div>
+        <div class="crt" style="z-index: 200;"></div>
         <header>
             <div id="wslogo">
                 <h1>
@@ -231,6 +255,7 @@
                     STATION<br>
                 </h1>
             </div>
+            <img src="emblem.png" style="position:absolute;width:3vw;height:3vw;z-index:100;left:40vw;">
             <h1>Current<br>Conditions</h1>
             <h1 id="time"></h1>
             <div id="maingrad">
@@ -240,12 +265,28 @@
         </header>
         <div id="content-container">
             <div id="content">
-
+                <div id="page1">
+                    <div class="left">
+                        <h2 id="temp">27°</h2>
+                        <h2 id="condition">Light Snow</h2>
+                        <h2 id="wind">Wind:     NW 20</h2>
+                        <h2 id="windcond">Gusts to 32</h2>
+                    </div>
+                    <div class="right">
+                        <h1 id="title">Dutch Harbor</h1>
+                        <h2 id="humidity">Humidity:     80%</h2>
+                        <h2 id="dewpoint">Dewpoint:     21°</h2>
+                        <h2 id="ceiling">Ceiling:       9500ft.</h2>
+                        <h2 id="vis">Visibility: 1 mi.</h2>
+                        <h2 id="pressure">Pressure: 29.87</h2>
+                        <h2 id="windchill">Wind Chill: 13°</h2>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="scroll-container">
-            <p id="scroll-text">
-                You are tuned to the Northern Osean Weather Station.
+            <p id="scroll-text" style="white-space: nowrap;">
+                You are tuned to the Northern Osean Weather Station. --- Your source for all things Weather!
             </p>
         </div>
     </body>
