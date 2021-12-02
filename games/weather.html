@@ -188,6 +188,14 @@
                 transform: translateX(-300%);
             }
             }
+            @keyframes scrollvert {
+            from {
+                transform: translateY(200%);
+            }
+            to {
+                transform: translateY(-100%);
+            }
+            }
 
             #wslogo{
                 position:absolute;
@@ -241,6 +249,10 @@
             #page2 h2{
                 top:25vh;
             }
+
+            #pagealert {
+
+            }
             @keyframes blink {
                 to {
                     visibility: hidden;
@@ -261,7 +273,7 @@
             }
             #radar {
                 position:fixed;
-                background-image: url("map.png");
+                background-image: url("mapstorm.png");
                 margin: 0 auto;
                 left: 15vw;
                 top: 6vh;
@@ -322,7 +334,7 @@
                     };
                 };
             }
-            var tog = 2;
+            var tog = 3;
             function aevent(){
                 document.getElementById("page2").style.display = 'block';
                 document.getElementById("mainaudio").pause();
@@ -338,13 +350,43 @@
             function cpage(){
                 if (tog == 1)
                 {
+                    document.getElementById("content").style.background = '';
+                    document.getElementById("content").style.boxShadow = '';
                     tog = 2;
                     document.getElementById("page3").style.display = 'block';
                     document.getElementById("page1").style.display = 'none';   
-                } else {
-                    tog = 1;
+
+                    document.getElementById("pagealert").style.display = 'none';
+                } else if (tog == 2) {
+                    tog = 3;
                     document.getElementById("page1").style.display = 'block';
                     document.getElementById("page3").style.display = 'none';
+
+                    document.getElementById("pagealert").style.display = 'none';
+
+                } else if (tog == 3)
+                {
+                    tog = 1;
+                    document.getElementById("page1").style.display = 'none';
+                    document.getElementById("page3").style.display = 'none';
+
+                    document.getElementById("pagealert").style.display = 'block';
+                    /*
+                    #content {
+                        position: fixed;
+                        left: 50%;
+                        transform: translate(-50%);
+                        width: 75vw;
+                        height: 65vh;
+                        box-shadow: inset 0 0 20px 10px rgba(112,120,255,1), 2px 2px 20px 2px black;
+                        background: rgb(39, 45, 126);
+
+                        rgb(255, 112, 112)
+                    }
+                    */
+                    document.getElementById("pagealert").style.animation = "scrollvert 10s linear infinite";
+                    document.getElementById("content").style.background = 'red';
+                    document.getElementById("content").style.boxShadow = 'inset 0 0 20px 10px rgb(255, 112, 112), 2px 2px 20px 2px black';
                 }
                 
             }
@@ -387,7 +429,7 @@
             <div id="trigrad"></div>
         </div>
         <div id="content-container">
-            <div id="content">
+            <div id="content" style="overflow:hidden;">
                 <div id="page1" style="display:block;">
                     <div class="left">
                         <h2 id="temp">27°</h2>
@@ -414,11 +456,26 @@
                         <h2 id="RHF" style="left: 25vw;position: absolute;font-size: 2em;top: 12vh;">RHF</h2>
                     </div>
                 </div>
+
+                <div id="pagealert" style="display:none;">
+                    <p id="scrollvert">
+                        The following message has been transmitted by The Osean Weather Service.            <br>
+                        A severe blizzard warning is in effect for the counties of:                         <br>
+                        Fairwether, Shinji                                                                  <br>
+                        From 11 AM to Midnight Friday. A blizzard watch is no longer in effect.             <br>
+                        Hazard ice, heavy snow and blizzard conditions. Snow may sweep across coastal       <br>
+                        and western areas this afternoon and evening.                                       <br>
+                        Snow accumulations: 3 to 6 Inches. Highest amounts in the northwest.                <br>
+                        Peak snow Thursday Morning. Impacts: Dangerous travel at times.                     <br>
+                        Several roads may be snowed over and become dangerous. Power outages possible.      <br>
+                        Do not travel.                                                                      <br>
+                    </p>
+                </div>
                 
             </div>
         </div>
         <div id="scroll-container">
-            <p id="scroll-text" style="white-space: nowrap; color:red;">
+            <p id="scroll-text" style="white-space: nowrap;">
                 <!--You are tuned to the Northern Osean Weather Station. --- Your source for all things Weather! -- Snow showers in the morning will give way to a mixture of rain and snow in the afternoon. High 36F. Winds SSE at 5 to 10 mph. Chance of precip 70%. -- Current conditions at. Fairwether, Fairwether Doppler Station Lat: 89.2° N Lon: 1310.4° W Elev: 23 ft. Light Snow. 29°F. -2°C. Humidity, 75%.-->
                 The following message has been transmitted by The Osean Weather Service. A severe blizzard warning is in effect for the counties of: Fairwether, and Shinji From 11 AM to Midnight Friday. A blizzard watch is no longer in effect. Hazard ice, heavy snow and blizzard conditions. Snow may sweep across coastal and western areas this afternoon and evening. Snow accumulations: 3 to 6 Inches. Highest amounts in the northwest. Peak snow Thursday Morning. Impacts: Dangerous travel at times. Several roads may be snowed over and become dangerous. Power outages possible. Do not travel.
             </p>
