@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"> 
+    <style type="text/css" media="screen">
+
+        .crt::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2000;
+            background-size: 100% 5px, 10px 100%;
+            pointer-events: none;
+        }
+        @keyframes flicker {
+            0% {
+            opacity: 0.27861;
+            }
+            5% {
+            opacity: 0.34769;
+            }
+            10% {
+            opacity: 0.23604;
+            }
+            15% {
+            opacity: 0.90626;
+            }
+            20% {
+            opacity: 0.18128;
+            }
+            25% {
+            opacity: 0.83891;
+            }
+            30% {
+            opacity: 0.65583;
+            }
+            35% {
+            opacity: 0.67807;
+            }
+            40% {
+            opacity: 0.26559;
+            }
+            45% {
+            opacity: 0.84693;
+            }
+            50% {
+            opacity: 0.96019;
+            }
+            55% {
+            opacity: 0.08594;
+            }
+            60% {
+            opacity: 0.20313;
+            }
+            65% {
+            opacity: 0.71988;
+            }
+            70% {
+            opacity: 0.53455;
+            }
+            75% {
+            opacity: 0.37288;
+            }
+            80% {
+            opacity: 0.71428;
+            }
+            85% {
+            opacity: 0.70419;
+            }
+            90% {
+            opacity: 0.7003;
+            }
+            95% {
+            opacity: 0.36108;
+            }
+            100% {
+            opacity: 0.24387;
+            }
+            }
+        .crt::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(18, 16, 16, 0.1);
+            opacity: 0;
+            z-index: 2000;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes textflicker {
+            from {
+                text-shadow: 1px 1px 10px rgb(255, 255, 255), 1px 0 0 #ea36af, -2px 0 0 #75fa69;
+            }
+            to {
+                text-shadow: 1px 1px 10px rgb(255, 255, 255), 2px 0.5px 2px #ea36af, -1px -0.5px 2px #75fa69;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            border:0;
+            font-family: 'VT323', monospace;
+            animation: textflicker 0.01s infinite alternate;
+        }
+
+        #content {
+            font-size: 4em;
+            position:absolute;
+            border: 1px solid black;
+            border-radius: 3%;
+            left: 2vw;
+            top: 2vh;
+            width: 96vw;
+            height: 96vh;
+            background:rgb(34, 34, 34);
+            box-shadow: inset 0 0 10px 10px black;
+            color:white;
+        }
+        #textbox {
+            padding: 20px;
+        }
+        .border {
+            position:absolute;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+        }
+
+        #cursor {
+            animation: blink 1s steps(5, start) infinite;
+        }
+        @keyframes blink {
+                to {
+                    visibility: hidden;
+                }
+            }
+
+        #worldmap {
+            background-image: url("0001-0250.gif");
+        }
+
+    </style>
+    <script type="text/javascript">
+        var text;
+
+        function command_reset(){
+            text.innerHTML += "<br>>";
+        }
+
+        function command_handler(event){
+
+            switch(event.key)
+                {
+
+                    default:
+                        text.innerHTML += event.key;
+                        break;
+
+                    case "Enter":
+                        
+                        break;
+                    case "Backspace":
+
+                        var newtext = text.innerHTML.slice(0, -1);
+                        if (text.innerHTML.slice(-1) == ";") {
+
+                        } else {
+                            text.innerHTML = newtext;
+                        }
+                        break;
+
+                    case "CapsLock": break;
+                    case "Shift": break;
+
+                }
+
+        }
+
+        function mainloop(){
+            var text = document.getElementById("text-content");
+            window.addEventListener("keydown", function (event) {
+                if (event.defaultPrevented) {
+                    return; // Do nothing if the event was already processed
+                }
+                
+                if (event.defaultPrevented) {
+                    return; // Do nothing if the event was already processed
+                }
+                switch(event.key)
+                {
+                    default:
+                        text.innerHTML += event.key;
+                        break;
+                    case "Enter":
+                        if (text.innerHTML.split('&gt;').reverse()[0] == "help")
+                        {
+                            text.innerHTML += "<br>UNIX TTerminal 1.0.2a"
+                        }
+                        if (text.innerHTML.split('&gt;').reverse()[0] == "ls")
+                        {
+                            text.innerHTML += "<br>NEW_PRODUCT.txt<br>STACK.asm<br>STACK.o"
+                        }
+
+                        if (text.innerHTML.split('&gt;').reverse()[0] == "cat NEW_PRODUCT.txt")
+                        {
+                            text.innerHTML += "<br>Release Date: 12/2/93<br>Description: The lastest innovation in alloisrnpstoertiuspenrt"
+                        }
+                        if (text.innerHTML.split('&gt;').reverse()[0] == "cat STACK.asm")
+                        {
+                            text.innerHTML += "<br>Forbidden."
+                        }
+                        if (text.innerHTML.split('&gt;').reverse()[0] == "map")
+                        {
+                            document.getElementById("worldmap").style.display = "block";
+                            //text.innerHTML += "<br>Forbidden."
+                        }
+                        if (text.innerHTML.split('&gt;').reverse()[0] == "./STACK")
+                        {
+                            text.innerHTML += "<br>"
+                            setTimeout(function(){text.innerHTML += "."}, 500);
+                            setTimeout(function(){text.innerHTML += "."}, 700);
+                            setTimeout(function(){text.innerHTML += "."}, 1000);
+                            setTimeout(function(){text.innerHTML += "203"}, 1100);
+                            
+                        }
+                        text.innerHTML += "<br>>";
+                        break;
+                    case "Backspace":
+                        var newtext = text.innerHTML.slice(0, -1);
+                        if (text.innerHTML.slice(-1) == ";") {
+
+                        } else {
+                            text.innerHTML = newtext;
+                        }
+                        break;
+                    case "CapsLock": break;
+                    case "Shift": break;
+                }
+                
+                // Cancel the default action to avoid it being handled twice
+                event.preventDefault();
+            }, true);
+        }
+        
+        function init(){
+            mainloop();
+        }
+        window.onload = init;
+    </script>
+
+</head>
+
+<body>
+
+    <div class="crt" style="z-index: 200;"></div>
+
+    <div class="border">
+        <div id="content">
+            <div id="worldmap" style="position: absolute;left: 60vw;top: 4vh;width: 24vw;height: 24vw;background-size: 24vw 24vw;display:none;">
+
+            </div>
+            <div id="textbox">
+                <span id="text-content">></span><span id="cursor">▮</span>
+            </div>
+            
+        </div>
+    </div>
+
+</body>
+
+</html>
