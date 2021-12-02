@@ -352,6 +352,8 @@
                 {
                     document.getElementById("content").style.background = '';
                     document.getElementById("content").style.boxShadow = '';
+                    document.getElementById("pagealert").style.animation = '';
+
                     tog = 2;
                     document.getElementById("page3").style.display = 'block';
                     document.getElementById("page1").style.display = 'none';   
@@ -384,7 +386,7 @@
                         rgb(255, 112, 112)
                     }
                     */
-                    document.getElementById("pagealert").style.animation = "scrollvert 10s linear infinite";
+                    document.getElementById("pagealert").style.animation = "scrollvert 20s linear infinite";
                     document.getElementById("content").style.background = 'red';
                     document.getElementById("content").style.boxShadow = 'inset 0 0 20px 10px rgb(255, 112, 112), 2px 2px 20px 2px black';
                 }
@@ -397,7 +399,7 @@
                 cpage();
                 getLocation();
                 window.setInterval(check, 500);
-                window.setInterval(cpage, 10000);
+                window.setInterval(cpage, 20000);
                 //setTimeout(aevent, 5000);
                 //setTimeout(bevent, 60000);
             }
@@ -451,9 +453,9 @@
                 <div id="page3" style="display:none;">
                     <h1 id="title">New Fairweather</h1>
                     <div id="radar">
-                        <h2 id="nfw" style="left: 23vw;position: absolute;font-size: 2em;top: 1vh;">NFW</h2>
-                        <h2 id="shj" style="left: 25vw;position: absolute;font-size: 2em;top: 4vh;">SHJ</h2>
-                        <h2 id="RHF" style="left: 25vw;position: absolute;font-size: 2em;top: 12vh;">RHF</h2>
+                        <h2 id="nfw" style="left: 23vw;position: absolute;font-size: 2em;top: 12vh;">NFW</h2>
+                        <h2 id="shj" style="left: 25vw;position: absolute;font-size: 2em;top: 8vh;">SHJ</h2>
+                        <h2 id="RHF" style="left: 25vw;position: absolute;font-size: 2em;top: 1vh;">RHF</h2>
                     </div>
                 </div>
 
