@@ -147,11 +147,54 @@
                 }
             }
 
+        #worldmap {
+            background-image: url("0001-0250.gif");
+        }
+
     </style>
     <script type="text/javascript">
+        var text;
+
+        function command_reset(){
+            text.innerHTML += "<br>>";
+        }
+
+        function command_handler(event){
+
+            switch(event.key)
+                {
+
+                    default:
+                        text.innerHTML += event.key;
+                        break;
+
+                    case "Enter":
+                        
+                        break;
+                    case "Backspace":
+
+                        var newtext = text.innerHTML.slice(0, -1);
+                        if (text.innerHTML.slice(-1) == ";") {
+
+                        } else {
+                            text.innerHTML = newtext;
+                        }
+                        break;
+
+                    case "CapsLock": break;
+                    case "Shift": break;
+
+                }
+
+        }
+
         function mainloop(){
             var text = document.getElementById("text-content");
             window.addEventListener("keydown", function (event) {
+                if (event.defaultPrevented) {
+                    return; // Do nothing if the event was already processed
+                }
+                
                 if (event.defaultPrevented) {
                     return; // Do nothing if the event was already processed
                 }
@@ -177,6 +220,11 @@
                         if (text.innerHTML.split('&gt;').reverse()[0] == "cat STACK.asm")
                         {
                             text.innerHTML += "<br>Forbidden."
+                        }
+                        if (text.innerHTML.split('&gt;').reverse()[0] == "map")
+                        {
+                            document.getElementById("worldmap").style.display = "block";
+                            //text.innerHTML += "<br>Forbidden."
                         }
                         if (text.innerHTML.split('&gt;').reverse()[0] == "./STACK")
                         {
@@ -220,6 +268,9 @@
 
     <div class="border">
         <div id="content">
+            <div id="worldmap" style="position: absolute;left: 60vw;top: 4vh;width: 24vw;height: 24vw;background-size: 24vw 24vw;display:none;">
+
+            </div>
             <div id="textbox">
                 <span id="text-content">></span><span id="cursor">▮</span>
             </div>
