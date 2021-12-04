@@ -174,6 +174,7 @@
 
             #scroll-text {
                 text-align: right;
+                font-size: 3vh;
 
                 transform: translateX(0%);
 
@@ -190,7 +191,7 @@
             }
             @keyframes scrollvert {
             from {
-                transform: translateY(200%);
+                transform: translateY(150%);
             }
             to {
                 transform: translateY(-100%);
@@ -249,10 +250,6 @@
             #page2 h2{
                 top:25vh;
             }
-
-            #pagealert {
-
-            }
             @keyframes blink {
                 to {
                     visibility: hidden;
@@ -284,7 +281,7 @@
                     
         </style >
         <audio src="dhr.mp3" controls autoplay style="position:absolute;" id="mainaudio"></audio>
-        <audio src="tone2.mp3" id="taudio"></audio>
+        <audio src="yes.mp3" id="taudio"></audio>
         <audio src="voc.mp3" id="vaudio"></audio>
         <script type="text/javascript">
             
@@ -339,7 +336,7 @@
                 document.getElementById("page2").style.display = 'block';
                 document.getElementById("mainaudio").pause();
                 document.getElementById("taudio").play();
-                setTimeout(function () {document.getElementById("vaudio").play()}, 5000);
+                //setTimeout(function () {document.getElementById("vaudio").play()}, 5000);
             }
             function bevent(){
                 document.getElementById("page2").style.display = 'none';
@@ -461,16 +458,33 @@
 
                 <div id="pagealert" style="display:none;">
                     <p id="scrollvert">
-                        The following message has been transmitted by The Osean Weather Service.            <br>
-                        A severe blizzard warning is in effect for the counties of:                         <br>
-                        Fairwether, Shinji                                                                  <br>
-                        From 11 AM to Midnight Friday. A blizzard watch is no longer in effect.             <br>
-                        Hazard ice, heavy snow and blizzard conditions. Snow may sweep across coastal       <br>
-                        and western areas this afternoon and evening.                                       <br>
-                        Snow accumulations: 3 to 6 Inches. Highest amounts in the northwest.                <br>
-                        Peak snow Thursday Morning. Impacts: Dangerous travel at times.                     <br>
-                        Several roads may be snowed over and become dangerous. Power outages possible.      <br>
-                        Do not travel.                                                                      <br>
+                        THE OSEAN WEATHER SERVICE HAS ISSUED A SEVERE BLIZZARD WARNING IN EFFECT UNTIL FURTHER NOTICE.<br>
+                        THE WINTER STORM WATCH IS NO LONGER IN EFFECT.<br><br>
+
+                        LOCATIONS: KIRWIN REGIONS<br><br>
+
+                        HAZARD TYPES: BLOWING SNOW, ICE, HEAVY SNOW AND SEVERE WIND.<br><br>
+
+                        ACCUMULATIONS: 3 TO 6 INCHES. HIGHEST AMOUNTS IN THE NORTHWEST.<br><br>
+
+                        VISIBILITIES: ONE MILE OR LESS<br><br>
+
+                        TEMPERATURES: LOW 20S<br><br>
+
+                        WINDS: NORTH 25 TO 35 MPH<br><br>
+
+                        IMPACTS...BLOWING AND DRIFTING SNOW WILL PRODUCE DANGEROUS<br>
+                        TRAVEL CONDITIONS. WIND CHILLS FROM 5 DEGREES BELOW ZERO TO 5<br>
+                        DEGREES ABOVE ZERO WILL PRODUCE EXTREME COLD IMPACTS.<br><br>
+
+                        PRECAUTIONARY/PREPAREDNESS ACTIONS...<br><br>
+
+                        A BLIZZARD WARNING MEANS SEVERE WINTER WEATHER CONDITIONS ARE<br>
+                        EXPECTED OR OCCURRING. FALLING AND BLOWING SNOW WITH STRONG WINDS<br>
+                        AND POOR VISIBILITIES ARE LIKELY. THIS WILL LEAD TO WHITEOUT<br>
+                        CONDITIONS...MAKING TRAVEL EXTREMELY DANGEROUS. DO NOT TRAVEL. IF<br>
+                        YOU MUST TRAVEL...HAVE A WINTER SURVIVAL KIT WITH YOU. IF YOU GET<br>
+                        STRANDED...STAY WITH YOUR VEHICLE.<br>
                     </p>
                 </div>
                 
