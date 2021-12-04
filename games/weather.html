@@ -336,6 +336,7 @@
                 document.getElementById("page2").style.display = 'block';
                 document.getElementById("mainaudio").pause();
                 document.getElementById("taudio").play();
+                window.setInterval(() => {document.getElementById("flashtext").innerHTML = "WHAM WARNING"}, 1171);
                 //setTimeout(function () {document.getElementById("vaudio").play()}, 5000);
             }
             function bevent(){
