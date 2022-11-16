@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+    <head>
+        <script src="js/perlin.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=News+Cycle:wght@700&display=swap" rel="stylesheet"> 
+        <style type="text/css" media="screen">
+            * {
+                margin: 0;
+                padding: 0;
+                border:0;
+                font-family: 'News Cycle', sans-serif;
+                font-stretch: ultra-condensed;
+                animation: textflicker 0.01s infinite alternate;
+            }
+            body {
+                background-color: #0d0058;
+            }
+            #maingrad {
+                width: 60vw;
+                position:fixed;
+                border-top: 8vh solid transparent;
+                background: linear-gradient(0deg, rgba(52,0,65,1) 0%, rgba(255,136,0,1) 100%) border-box;
+            }
+            #trigrad {
+                width: 10vw;
+                position:fixed;
+                right: 40vw;
+                border-top: 8vh solid transparent;
+                border-right: 8vh solid #0d0058;
+                background: linear-gradient(0deg, rgba(52,0,65,1) 0%, rgba(255,136,0,1) 100%) border-box;
+            }
+            
+            #content-container {
+                background: linear-gradient(0deg, rgba(255,136,0,1) 0%, rgba(52,0,65,1) 100%);
+                width:100vw;
+                height: 75vh;
+                display:flex;
+                justify-content: center;
+                align-items: center;
+                top:8vh;
+                position:relative;
+                
+            }
+            #content {
+                /*position: fixed;
+                left: 50%;
+                transform: translate(-50%);*/
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 75vw;
+                height: 65vh;
+                box-shadow: inset 0 0 20px 10px rgba(112,120,255,1), 2px 2px 20px 2px black;
+                background: rgb(39, 45, 126);
+            }
+            h1 {
+                position: absolute;
+                color: rgb(255, 238, 0);
+                top: 0vw;
+                left:25vw;
+                z-index: 3;
+                font-size: 3vh;
+                text-shadow: 2px 2px #000000;
+                line-height: 80%;
+                
+            }
+            #time {
+                color: white;
+                left:50vw;
+                font-size: 2vh;
+            }
+
+            .crt::before {
+                content: " ";
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+                z-index: 2000;
+                background-size: 100% 2px, 3px 100%;
+                pointer-events: none;
+                }
+            @keyframes flicker {
+            0% {
+            opacity: 0.27861;
+            }
+            5% {
+            opacity: 0.34769;
+            }
+            10% {
+            opacity: 0.23604;
+            }
+            15% {
+            opacity: 0.90626;
+            }
+            20% {
+            opacity: 0.18128;
+            }
+            25% {
+            opacity: 0.83891;
+            }
+            30% {
+            opacity: 0.65583;
+            }
+            35% {
+            opacity: 0.67807;
+            }
+            40% {
+            opacity: 0.26559;
+            }
+            45% {
+            opacity: 0.84693;
+            }
+            50% {
+            opacity: 0.96019;
+            }
+            55% {
+            opacity: 0.08594;
+            }
+            60% {
+            opacity: 0.20313;
+            }
+            65% {
+            opacity: 0.71988;
+            }
+            70% {
+            opacity: 0.53455;
+            }
+            75% {
+            opacity: 0.37288;
+            }
+            80% {
+            opacity: 0.71428;
+            }
+            85% {
+            opacity: 0.70419;
+            }
+            90% {
+            opacity: 0.7003;
+            }
+            95% {
+            opacity: 0.36108;
+            }
+            100% {
+            opacity: 0.24387;
+            }
+            }
+            .crt::after {
+                content: " ";
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                background: rgba(18, 16, 16, 0.1);
+                opacity: 0;
+                z-index: 2000;
+                pointer-events: none;
+                animation: flicker 0.15s infinite;
+            }
+            #scroll-container {
+                position: fixed;
+                top: 81vh;
+                width: 100vw;
+                height:35vh;
+                overflow: hidden;
+                background:rgba(112,120,255,1);
+                border-top: 2px solid white;
+            }
+            p {
+                color: white;
+                font-size: 2em;
+                text-overflow:clip;
+                text-shadow: 2px 2px #000000;
+            }
+
+            #scroll-text {
+                text-align: right;
+                font-size: 3vh;
+
+                transform: translateX(0%);
+
+                animation: my-animation 30s linear infinite;
+            }
+
+            @keyframes my-animation {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-300%);
+            }
+            }
+            @keyframes scrollvert {
+            from {
+                transform: translateY(70%);
+            }
+            to {
+                transform: translateY(-100%);
+            }
+            }
+
+            #wslogo{
+                position:absolute;
+                border: 3px solid white;
+                border-radius: 5px;
+                background:rgb(39, 45, 126);
+                left: 6vw;
+                top: 1vh;
+                height: 5.2vw;
+                width: 10vw;
+                z-index:100;
+                box-shadow: 4px 4px 4px 4px black;
+            }
+
+            #wslogo h1{
+                left:1vw;
+                top:0;
+                color:white;
+                font-size: 2vw;
+                text-align: center;
+            }
+            h2 {
+                font-size: 400%;
+                color:white;
+                text-shadow: 4px 4px black;
+            }
+            #title {
+                position: fixed;
+
+                width: 100%;
+                left: 0;
+                top: 0;
+                transform: translateX(40%) translateY(600%);
+            }
+            #page2 {
+                position: absolute;
+                width: 100vw;
+                height: 100vh;
+                top: 0;
+                left: 0;
+                z-index:1000;
+                background: #111;
+            }
+            #page2 h2{
+                top:25vh;
+            }
+            @keyframes blink {
+                to {
+                    visibility: hidden;
+                }
+            }
+            #flashtext {
+                animation: blink 1s steps(5, start) infinite;
+                
+            }
+
+            @keyframes textflicker {
+                from {
+                    text-shadow: 5px 5px black, 1px 0 0 #ea36af, -2px 0 0 #75fa69;
+                }
+                to {
+                    text-shadow: 5px 5px black, 2px 0.5px 2px #ea36af, -1px -0.5px 2px #75fa69;
+                }
+            }
+            #radar {
+                background-image: url("weather/mapserv.png");
+                margin: 0 auto;
+                width:50vh;
+                height: 50vh;
+                background-size: 50vh 50vh;
+            }
+                    
+        </style >
+
+        <audio src="weather/dhr.mp3" controls autoplay style="position:absolute;" id="mainaudio"></audio>
+        <audio src="yes.mp3" id="taudio"></audio>
+        <audio src="voc.mp3" id="vaudio"></audio>
+
+        <script type="text/javascript">
+            /////////////////////////////////////////////////////
+            var pages = {
+                'currentActive': -1,
+                'pages': [
+                    {   
+                        'id': 'pagealert', 
+                        'defaultDisplay': "block",
+                        'background': "#721d1d",
+                        'animation': "scrollvert 20s linear infinite",
+                        'boxShadow': 'inset 0 0 20px 10px rgb(255, 112, 112), 2px 2px 20px 2px black', // change this so shadow is automatically darker than the main color
+                        'active': 0,
+                        'preventShow': 1
+                    },
+                    {
+                        'id': 'page1',
+                        'defaultDisplay': "flex",
+                        'background': '',
+                        'animation': '',
+                        'boxShadow': '',
+                        'active': 0
+                    },
+                    {
+                        'id': 'page3',
+                        'defaultDisplay': "block",
+                        'background': '',
+                        'animation': '',
+                        'boxShadow': '',
+                        'active': 0
+                    }
+                ]
+            };
+
+            function getLocation() {
+                if(navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } 
+            }
+
+            function showPosition(position){
+                const xhr = new XMLHttpRequest();
+                xhr.responseType = 'json';
+                xhr.open('GET', `https://api.weather.gov/points/${position.coords.latitude},${position.coords.longitude}`)
+                xhr.send();
+                xhr.onload = () => {
+                    const data = xhr.response;
+                    const forecastUrl = data.properties.forecast;
+                    xhr.open('GET', data.properties.forecastGridData)
+                    xhr.send();
+                    
+                    xhr.onload = () => {
+                        const data = xhr.response;
+                        document.getElementById("temp").innerHTML = ((Math.round(parseFloat(data.properties.apparentTemperature.values[0].value)) * (9/5)) + 32) + '°';
+                        document.getElementById("dewpoint").innerHTML = 'Dewpoint: ' + ((Math.round(parseFloat(data.properties.dewpoint.values[0].value)) * (9/5)) + 32) + '°';
+                        document.getElementById("windchill").innerHTML = 'Wind Chill: ' + ((Math.round(parseFloat(data.properties.windChill.values[0].value)) * (9/5)) + 32) + '°';
+                        document.getElementById("humidity").innerHTML = 'Humidity: ' + Math.round(parseFloat(data.properties.relativeHumidity.values[0].value)) + '%';
+                        //document.getElementById("vis").innerHTML = 'Humidity: ' + Math.round(parseFloat(data.properties.relativeHumidity.values[0].value)) + '%';
+                        var ws = parseFloat(data.properties.windSpeed.values[0].value); //todo convert
+                        
+                        
+                        xhr.open('GET', forecastUrl);
+                        xhr.send();
+                        xhr.onload = () => {
+                            const data = xhr.response;
+                            console.log(data);
+                            document.getElementById("scroll-text").innerHTML = data.properties.periods[0].detailedForecast;
+                            document.getElementById("condition").innerHTML = data.properties.periods[0].shortForecast;
+                            document.getElementById("wind").innerHTML = 'Wind: ' + data.properties.periods[0].windDirection + ' ' + ws;
+                        };
+                    };
+                };
+            }
+
+            function aevent(){
+                document.getElementById("page2").style.display = 'block';
+                document.getElementById("mainaudio").pause();
+                document.getElementById("taudio").play();
+                window.setInterval(() => {document.getElementById("flashtext").innerHTML = "WHAM WARNING"}, 1171);
+                //setTimeout(function () {document.getElementById("vaudio").play()}, 5000);
+            }
+            function bevent(){
+                document.getElementById("page2").style.display = 'none';
+                document.getElementById("taudio").pause();
+                document.getElementById("mainaudio").play();
+            }
+
+            var _styleCache;
+            function changePage(){
+                //
+                // EHHHH
+                //
+                pages.currentActive += 1;
+                pages.currentActive = pages.currentActive % pages.pages.length;
+
+                if(pages.pages[pages.currentActive].preventShow)
+                {
+                    pages.currentActive += 1;
+                    pages.currentActive = pages.currentActive % pages.pages.length;
+                }
+
+                document.getElementById("content").style.background = pages.pages[pages.currentActive].background;
+                document.getElementById("content").style.boxShadow = pages.pages[pages.currentActive].boxShadow;
+                document.getElementById(pages.pages[pages.currentActive].id).style.animation = pages.pages[pages.currentActive].animation;
+
+                pages.pages[pages.currentActive].active = 1;
+                pages.pages.map((x) => {
+                    document.getElementById(x.id).style.display = x.active == 1 ? pages.pages[pages.currentActive].defaultDisplay : 'none';
+                    x.active = 0;
+                });
+
+            }
+            
+            let radarRules = (y) => {
+                if(y > 192){return [219,0,220,255]};
+                if(160 <= y && y < 192){ return [66,0,0,200]};
+                if(128 <= y && y < 160){ return [237,0,0,200]};
+                if(96 <= y && y < 128){ return [237,277,0,200]};
+                if(64 <= y && y < 96){ return [1,161,0,200]}; // dark green
+                if(32 <= y && y < 64){ return [45,255,125,200]}; // light green
+                if(0 <= y && y < 32){ return [0,0,0,0]};
+                return [0,0,0,0];
+ 
+            };
+
+            function simpleNoise(x, s){
+                return (Math.cos(Math.sin(2*(x-10*s)) + Math.sin(Math.E*(x+(10*s/s))))+ Math.sin(Math.PI*x))-0.5;
+            }
+
+            function init(){
+                /*
+                radar segment
+                */
+                let utc = new Date().getTime();
+                let timeChunk = parseInt(utc / 900000);
+
+                var radarSegment = 0;
+                var radarXOffset = 0;
+                var radarYOffset = 0;
+                var radarXSpeed = 0.05 + 0.1*simpleNoise(timeChunk, 102);
+                var radarYSpeed = 0.04 + 0.1*simpleNoise(timeChunk, 1823);
+                var radarTurbidity = 6;
+                var strengthTrend = -0.003;
+                var coverageTrend = 0;
+                var cellSizeTrend = 0;
+
+                canvas = document.getElementById("radarCanvas");
+                ctx = canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = false;
+                imgData = ctx.createImageData(canvas.width,canvas.height); 
+                var radarSegments = [];
+                // Pre load 12 radar frames to cycle through.
+                for(i = 0; i <= 12; i++)
+                {
+                    strengthTrend += 0.01*simpleNoise(timeChunk, 10293);
+
+                    var radarPerlinNoise1 = generatePerlinNoise(
+                        canvas.width,
+                        canvas.height,
+                        60-cellSizeTrend,
+                        40+(strengthTrend/10),
+                        0+timeChunk+radarXOffset,
+                        0+timeChunk+radarYOffset)[1];
+
+                    var radarPerlinNoise2 = generatePerlinNoise(
+                        canvas.width,canvas.height,
+                        20-cellSizeTrend,
+                        30+(strengthTrend/10),
+                        64+timeChunk+radarXOffset*radarTurbidity,
+                        64+timeChunk+radarYOffset*radarTurbidity)[1];
+
+                    var radarPerlinNoise3 = generatePerlinNoise(
+                        canvas.width,
+                        canvas.height,
+                        10-cellSizeTrend,
+                        20+(strengthTrend/10),
+                        128+timeChunk+radarXOffset*radarTurbidity,
+                        128+timeChunk+radarYOffset*radarTurbidity)[1];
+
+                    var noiseCol = [];
+                    for (var y = 0; y < canvas.height; y += 1)
+                    {
+                        for (var x = 0; x < canvas.width; x += 1)
+                        {
+                            var col = Math.pow((radarPerlinNoise1[x][y] + radarPerlinNoise2[x][y] + radarPerlinNoise3[x][y]) / (2.77 - (0.1*simpleNoise(timeChunk, 102))), 1.89);
+                            noiseCol.push(radarRules(col));
+                        }
+                    
+                    }
+                    radarSegments.push(noiseCol);
+                    radarXOffset += radarXSpeed;
+                    radarYOffset += radarYSpeed;
+                    strengthTrend += strengthTrend;
+                    cellSizeTrend -= cellSizeTrend;
+                }
+                
+                window.setInterval(() => {
+                    ctx.clearRect(0,0,canvas.width,canvas.height);
+                    toImageData(radarSegments[radarSegment], imgData);
+                    ctx.putImageData(imgData,0,0);
+                    radarSegment++;
+                    radarSegment = radarSegment % radarSegments.length;
+                }, 200);
+                //toImageData(noiseCol, imgData);
+                //ctx.putImageData(imgData,0,0);
+
+
+                changePage();changePage();
+                //const audio = document.querySelector("audio");
+                //audio.play();
+                
+                //getLocation();
+                
+                //Change Date
+                window.setInterval(
+                    () => {
+                        var now = new Date();
+                        time = now.toLocaleTimeString('en-US');
+                        date = now.toLocaleDateString('en-us', { weekday:"short", year:"numeric", month:"short", day:"numeric"})
+                        document.getElementById("time").innerHTML = `${time.toUpperCase()}<br>${date.toUpperCase().replace(',', '')}`;
+                    }, 500);
+                window.setInterval(changePage, 20000);
+                //setTimeout(aevent, 5000);
+                //setTimeout(bevent, 60000);
+            }
+            window.onload = init;
+        </script>
+    </head>
+    <body>
+        <div class="crt" style="z-index: 200;"></div>
+        <div id="page2" style="display:none;">
+            <h2 style="margin: 0 auto; text-align: center;">EMERGENCY BROADCAST SYSTEM</h2>
+            <h2 style="margin: 0 auto; text-align: center;">Osean Weather Service</h2>
+            <h2 style="margin: 0 auto; text-align: center;">issued a</h2>
+            <h2 style="margin: 0 auto; text-align:center" id="flashtext">Blizzard Warning</h2>
+        </div>
+        <div id="header">
+            <div id="wslogo">
+                <h1>
+                    THE<br>
+                    WEATHER<br>
+                    STATION<br>
+                </h1>
+            </div>
+
+            <img src="emblem.png" style="position:absolute;width:3vw;height:3vw;z-index:100;left:40vw;">
+
+            <h1>Current<br>Conditions</h1>
+
+            <h1 id="time"></h1>
+
+            <div id="maingrad"></div>
+            <div id="trigrad"></div>
+
+        </div>
+        <div id="content-container">
+            <div id="content" style="overflow:hidden;">
+                <div id="page1" style="position:relative;display:flex;justify-content:space-evenly;align-content:space-evenly;width:100%;height:100%;">
+                    <div class="left" style="position:relative;display:flex;flex-direction: column;top: 4vh;align-items: center;">
+                        <h1 id="title">New Fairweather</h1>
+                        <h2 id="temp">14°</h2>
+                        <h2 id="condition">Snow</h2>
+                        <img id="icon" src="weather/icons/Flurries.gif" style="width:6vw;height:6vw;"></h2>
+                        <h2 id="wind">Wind:     E 12</h2>
+                        <h2 id="windcond">Gusts to 32</h2>
+                    </div>
+                    <div class="right" style="position:relative;display:flex;flex-direction: column;top: 4vh;">
+                        
+                        <h2 id="humidity">Humidity:     67%</h2>
+                        <h2 id="dewpoint">Dewpoint:     40°</h2>
+                        <h2 id="ceiling">Ceiling:       9500ft.</h2>
+                        <h2 id="vis">Visibility: 7 mi.</h2>
+                        <h2 id="pressure">Pressure: 29.87</h2>
+                        <h2 id="windchill">Wind Chill: 10°</h2>
+                    </div>
+                </div>
+
+                <div id="page3" style="display:none;">
+                    <h1 id="title">3 hour radar</h1>
+                    <div id="radar">
+                        <div id="radarScaler" style="display:inline-block;resize:both;width:50vh;height:50vh;">
+                            <canvas id="radarCanvas" width="128" height="128" style="z-index:1000;width:100%;height:100%;">
+                            </canvas>
+                        </div>
+                        
+                        <h2 id="nfw" style="position:relative;bottom:45%;left: 33%;font-size: 125%;">NFW<br><span style="color:rgb(255, 238, 0);top: -0.7vh;position: relative;">12<img src="weather/icons/Flurries.gif" style="width:1em;height:1em;top: 0.2vh;position: relative;"></span></h2>
+                        <h2 id="shj" style="position:relative;bottom:60%;left: 39%;font-size: 125%;">SHJ<br><span style="color:rgb(255, 238, 0);top: -0.7vh;position: relative;">10<img src="weather/icons/Snow.gif" style="width:1em;height:1em;top: 0.2vh;position: relative;"></span></h2>
+                    </div>
+                </div>
+
+                <div id="pagealert" style="display:none;">
+                    <p id="scrollvert">
+                        THE OSEAN WEATHER SERVICE HAS ISSUED A SEVERE BLIZZARD WARNING IN EFFECT UNTIL FURTHER NOTICE.<br>
+                        THE WINTER STORM WATCH IS NO LONGER IN EFFECT.<br><br>
+
+                        LOCATIONS: KIRWIN REGIONS<br><br>
+
+                        HAZARD TYPES: BLOWING SNOW, ICE, HEAVY SNOW AND SEVERE WIND.<br><br>
+
+                        ACCUMULATIONS: 3 TO 6 INCHES. HIGHEST AMOUNTS IN THE NORTHWEST.<br><br>
+
+                        VISIBILITIES: ONE MILE OR LESS<br><br>
+
+                        TEMPERATURES: LOW 20S<br><br>
+
+                        WINDS: NORTH 25 TO 35 MPH<br><br>
+
+                        IMPACTS...BLOWING AND DRIFTING SNOW WILL PRODUCE DANGEROUS<br>
+                        TRAVEL CONDITIONS. WIND CHILLS FROM 5 DEGREES BELOW ZERO TO 5<br>
+                        DEGREES ABOVE ZERO WILL PRODUCE EXTREME COLD IMPACTS.<br><br>
+
+                        PRECAUTIONARY/PREPAREDNESS ACTIONS...<br><br>
+
+                        A BLIZZARD WARNING MEANS SEVERE WINTER WEATHER CONDITIONS ARE<br>
+                        EXPECTED OR OCCURRING. FALLING AND BLOWING SNOW WITH STRONG WINDS<br>
+                        AND POOR VISIBILITIES ARE LIKELY. THIS WILL LEAD TO WHITEOUT<br>
+                        CONDITIONS...MAKING TRAVEL EXTREMELY DANGEROUS. DO NOT TRAVEL. IF<br>
+                        YOU MUST TRAVEL...HAVE A WINTER SURVIVAL KIT WITH YOU. IF YOU GET<br>
+                        STRANDED...STAY WITH YOUR VEHICLE.<br>
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+        <div id="scroll-container">
+            <p id="scroll-text" style="white-space: nowrap;">
+                Osean Weather Station resumes operation post needed upgrades. Thank you!
+            </p>
+        </div>
+    </body>
+</html>

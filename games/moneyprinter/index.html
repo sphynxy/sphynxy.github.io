@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        html {
+            font-family: tahoma;
+        }
+        body {
+            background-color:#dddddd;
+        }
+        .node {
+            flex-shrink:0;
+            width: 100px;
+            height: 100px;
+            background-color: gray;
+            z-index:10;
+            margin:10px;
+            border: 1px solid black;
+            border-radius:10px;
+            box-shadow: 0px 0px 10px 1px gray;
+            text-align:center;
+            overflow:clip;
+        }
+        .node > p, .node > span > p {
+            user-select: none;
+            margin:0;
+            color:white; 
+        }
+        .node > span > p {
+            user-select: none;
+            margin-bottom: 2px;
+            width:15px;
+            height:15px;
+            border: 1px solid black;
+            border-radius:5px;
+        }
+        .input > p {
+            background-color:green;
+        }
+        .output > p {
+            background-color:orange;
+        }
+        .node .input {
+            float:left;
+            display:flex;
+            flex-direction:column;
+        }
+        .node .output {
+            float:right;
+        }
+        .nodeHandle {
+            background-color:brown;
+            height:10px;
+            width:100px;
+        }
+        .del {
+            width:10px;
+            height:10px;
+            background-color:red;
+            float:left;
+        }
+        #nodeShop {
+            display:flex;
+            flex-direction: column;
+        }
+    </style>
+    <script type="text/javascript">
+        var gameData = {
+            currentValue: new Number(),
+            perSecond: new Number(),
+            retriggerTime: 0,
+            validNodes: [false],
+            maxNodes:10,
+            nodes:{},
+            shop:{
+                "Add-1/100": {
+                    "price": new Number(0.10, 0),
+                    "onbuy": () => {
+                        _ = new Node(
+                            "Add-1/100",
+                            {
+                                "Input": new Input(),
+                            },
+                            {
+                                "Output": new Output()
+                            },
+                            function x(){
+                                //this.inputs.Input.number.addE(0.01, 0);
+
+                                this.outputs.Output.number.value = this.inputs.Input.number.value;
+                                this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                                this.outputs.Output.number.addE(0.01,0);
+                            }
+                        ); _.updatePosition(100,100);
+                    } 
+                },
+                "Add-1/20": {
+                    "price": new Number(0.90, 0),
+                    "onbuy": () => {
+                        _ = new Node(
+                            "Add-1/20",
+                            {
+                                "Input": new Input(),
+                            },
+                            {
+                                "Output": new Output()
+                            },
+                            function x(){
+                                //this.inputs.Input.number.addE(0.01, 0);
+
+                                this.outputs.Output.number.value = this.inputs.Input.number.value;
+                                this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                                this.outputs.Output.number.addE(0.05,0);
+                            }
+                        ); _.updatePosition(100,100);
+                    } 
+                },
+                "Multiply1.1": {
+                    "price": new Number(1.00, 0),
+                    "onbuy": () => {
+                        _ = new Node(
+                            "Multiply1.1",
+                            {
+                                "Input": new Input(),
+                            },
+                            {
+                                "Output": new Output()
+                            },
+                            function x(){
+                                //this.inputs.Input.number.addE(0.01, 0);
+
+                                this.outputs.Output.number.value = this.inputs.Input.number.value;
+                                this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                                this.outputs.Output.number.multE(1.1,0);
+                            }
+                        ); _.updatePosition(100,100);
+                    } 
+                },
+                "Retrigger1s": {
+                    "price": new Number(4.00, 0),
+                    "onbuy": () => {
+                        _ = new Node(
+                            "Retrigger1s",
+                            {
+                                "Input": new Input(),
+                            },
+                            {
+                                "Output": new Output()
+                            },
+                            function x(){
+                                this.outputs.Output.number.value = this.inputs.Input.number.value;
+                                this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                                gameData.retriggerTime = 1000;
+                            }
+                        ); _.updatePosition(100,100);
+                    } 
+                },
+                "One": {
+                    "price": new Number(6.00, 0),
+                    "onbuy": () => {
+                        _ = new Node(
+                            "One",
+                            {
+                                "Input": null,
+                            },
+                            {
+                                "Output": new Output(1, 0)
+                            },
+                            function x(){
+                                this.outputs.Output.number.value = 1;
+                                this.outputs.Output.number.exponent = 0;
+                            }
+                        ); _.updatePosition(100,100);
+                    } 
+                },
+                "Retrigger0.5s": {
+                    "price": new Number(10.00, 0),
+                    "onbuy": () => {
+                        _ = new Node(
+                            "Retrigger0.5s",
+                            {
+                                "Input": new Input(),
+                            },
+                            {
+                                "Output": new Output()
+                            },
+                            function x(){
+                                this.outputs.Output.number.value = this.inputs.Input.number.value;
+                                this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                                gameData.retriggerTime = 500;
+                            }
+                        ); _.updatePosition(100,100);
+                    } 
+                },
+                "Multiply2": {
+                    "price": new Number(30.00, 0),
+                    "onbuy": () => {
+                        _ = new Node(
+                            "Multiply2",
+                            {
+                                "Input": new Input(),
+                                "Input2": new Input(),
+                            },
+                            {
+                                "Output": new Output()
+                            },
+                            function x(){
+                                this.inputs.Input.number.multE(this.inputs.Input2.number.value, this.inputs.Input2.number.exponent);
+
+                                this.outputs.Output.number.value = this.inputs.Input.number.value;
+                                this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                            }
+                        ); _.updatePosition(100,100);
+                    } 
+                },
+                "Add2": {
+                    "price": new Number(30.00, 0),
+                    "onbuy": () => {
+                        _ = new Node(
+                            "Add2",
+                            {
+                                "Input": new Input(),
+                                "Input2": new Input(),
+                            },
+                            {
+                                "Output": new Output()
+                            },
+                            function x(){
+                                this.inputs.Input.number.addE(this.inputs.Input2.number.value, this.inputs.Input2.number.exponent);
+
+                                this.outputs.Output.number.value = this.inputs.Input.number.value;
+                                this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                            }
+                        ); _.updatePosition(100,100);
+                    } 
+                },
+                "Two": {
+                    "price": new Number(100.00, 0),
+                    "onbuy": () => {
+                        _ = new Node(
+                            "Two",
+                            {
+                                "Input": null,
+                            },
+                            {
+                                "Output": new Output(2, 0)
+                            },
+                            function x(){
+                                //this.inputs.Input.number.addE(0.01, 0);
+                                this.outputs.Output.number.value = 2;
+                                this.outputs.Output.number.exponent = 0;
+                            }
+                        ); _.updatePosition(100,100);
+                    } 
+                },
+                "X*Y*Z": {
+                    "price": new Number(3000.00, 0),
+                    "onbuy": () => {
+                        _ = new Node(
+                            "X*Y*Z",
+                            {
+                                "Input": new Input(),
+                                "Input2": new Input(),
+                                "Input3": new Input(),
+                            },
+                            {
+                                "Output": new Output()
+                            },
+                            function x(){
+                                this.inputs.Input.number.multE(this.inputs.Input2.number.value, this.inputs.Input2.number.exponent);
+                                this.inputs.Input.number.multE(this.inputs.Input3.number.value, this.inputs.Input3.number.exponent);
+                                this.outputs.Output.number.value = this.inputs.Input.number.value;
+                                this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                            }
+                        ); _.updatePosition(100,100);
+                    } 
+                },
+            }
+        };
+
+        var selectedHandle = "";
+        var selectedNode = "";
+
+        var magnitudes = [
+            // short, long
+            ["", ""],
+            ["K", "Thousand"],
+            ["M", "Million"],
+            ["B", "Billion"],
+            ["T", "Trillion"],
+            ["Qa", "Quadrillion"],
+            ["Qi", "Quintillion"],
+            ["Sx", "Sextillion"],
+            ["Sp", "Septillion"],
+            ["Oc", "Octillion"],
+            ["No", "Nonillion"],
+            ["De", "Decillion"],
+            ["Ud", "Undecillion"],
+            ["No", "Nonillion1"],
+            ["No", "Nonillion2"],
+            ["No", "Nonillion3"],
+            ["No", "Nonillion4"],
+            ["No", "Nonillion5"],
+            ["No", "Nonillion6"],
+        ];
+
+        function nodePreset(id) {
+            elem = document.createElement("div");
+            topElem = document.createElement("div");
+            topElem.className = "nodeHandle";
+            delelem = document.createElement("div");
+            delelem.className = "del";
+            elem.className = "node";
+            elem.id = id;
+            elem.innerHTML = "<p id='" + id + "name'></p><span id='" + id + "inputs' class='input'></span>" + "<span id='" + id + "outputs' class='output'></span>"
+            elem.style.position = "absolute";
+            return [elem, topElem, delelem];
+        }
+
+        function Number(v, e){
+            if (v === undefined){
+                this.value = 0.00;
+                this.exponent = 0;
+            } else {
+                this.value = v;
+                this.exponent = e;
+            }
+            
+            this.normalize = () => {
+                if(this.value >= 1000) {
+                    // GOD YEAH
+                    let newExponent = this.exponent + ((Math.floor(Math.log10(this.value)) + 1)-1);
+                    
+                    this.value = this.value / Math.pow(10, newExponent - this.exponent);
+                    this.exponent = newExponent;
+                    
+                }
+                this.value.toPrecision(4);
+            }
+
+            this.alignTo = (x) => {
+                // YES
+                let minX = x.exponent > this.exponent ? [this, x, 0] : [x, this, 1];
+
+                diff = minX[1].exponent - minX[0].exponent;
+
+                tempValue /*minX[0].value*/ = minX[0].value / Math.pow(10, diff);
+                tempExponent /*minX[0].exponent*/ = minX[1].exponent;
+                minX[(!minX[2])+0] = {'value': tempValue, 'exponent': tempExponent};
+                return minX;
+            }
+
+            this.add = (x) => {
+                normal = this.alignTo(x);
+                // mmmmmmmm
+                if(normal[!(normal[2])+0].exponent > normal[normal[2]].exponent) {
+                    normal[normal[2]].exponent = normal[!(normal[2])+0].exponent;
+                }
+                normal[normal[2]].value += normal[!(normal[2])+0].value;  
+
+                this.normalize();
+            }
+
+            this.addE = (v, e, txt) => {
+                let n = {'value': v, 'exponent': e};
+                normal = this.alignTo(n);
+                if(normal[!(normal[2])+0].exponent > normal[normal[2]].exponent) {
+                    normal[normal[2]].exponent = normal[!(normal[2])+0].exponent;
+                }
+                normal[normal[2]].value += normal[!(normal[2])+0].value;    
+                this.normalize();
+            }
+            this.subE = (v, e) => {
+                let n = {'value': v, 'exponent': e};
+                normal = this.alignTo(n);
+                if(normal[!(normal[2])+0].exponent > normal[normal[2]].exponent) {
+                    normal[normal[2]].exponent = normal[!(normal[2])+0].exponent;
+                }
+                normal[normal[2]].value -= normal[!(normal[2])+0].value;    
+                this.normalize();
+            }
+            this.multE = (v, e) => {
+
+                this.value *= v;
+                this.normalize();
+
+            }
+
+            this.greaterThanE = (v, e) => {
+                let n = {'value': v, 'exponent': e};
+                normal = this.alignTo(n);
+                //console.log(this.value, this.exponent, normal[!(normal[2])+0].value, normal[!(normal[2])+0].exponent);
+                return this.value > normal[!(normal[2])+0].value;
+            }
+
+        }
+        /*
+            For future reference:
+                Nodes connect to each other with the connectTo method
+                this reference is deprecated
+                the node output is an array with these elements:
+                    0: the output Number
+                    1: the connected node
+                    2: the name of the input on the connected node
+                the node input is the Number associated with the output on its connected node (previous connection really)
+
+            A good in browser testing sequence is this:
+                gameData.nodes          // lists the nodes
+                gameData.nodes[0].connectTo("Output", gameData.nodes[1], "Input") //connects default start node to default addone node
+                gameData.nodes[1].connectTo("Output", gameData.nodes[2], "Input") //connects default addone node to default endnode
+                gameData.nodes[0].trigger()  // triggers the sequence
+
+                gameData.nodes;gameData.nodes[0].connectTo("Output", gameData.nodes[1], "Input");gameData.nodes[1].connectTo("Output", gameData.nodes[2], "Input");gameData.nodes[0].trigger() //single line version
+        */
+        var curNodeCount = 0;
+        var nodeCount = 0;
+        function Node(title, inputs, outputs, func){
+            
+            this.id = nodeCount; //Math.floor(Math.random()*Date.now()).toString();
+            nodeCount++;
+            curNodeCount++; //TODO MAX NODES
+
+            gameData.nodes[this.id] = this;
+
+            this.title = title;
+
+            this.inputs = inputs;
+            this.outputs = outputs;
+            
+            this.connections = [];
+            this.default = {inputs: inputs, outputs: outputs};
+            this.defaultIO = [this.default.inputs, this.default.outputs];
+
+            this.func = func;
+
+            this.nodeElem = nodePreset(this.id);
+            this.nodeTop = this.nodeElem[1];
+            this.delelem = this.nodeElem[2];
+            this.nodeElem = this.nodeElem[0];
+            document.getElementById("nodeContainer").append(this.nodeElem);
+            this.nodeElem.prepend(this.nodeTop);
+            this.nodeTop.append(this.delelem);
+
+            this.delelem.onclick = () => {
+                for (const i in this.outputs) {
+                    if (this.outputs[i].connectedNode !== null) this.disconnect(i);
+                }
+                for (const i in this.inputs){
+                    if (this.inputs[i] !== null && this.inputs[i].connectedNode !== null)
+                    {
+                        this.inputs[i].connectedNode.disconnect(this.inputs[i].outputName);
+                    } 
+                }
+                this.nodeElem.remove();
+                gameData.nodes[this.id] = null;
+                curNodeCount--;
+            }
+            
+            this.pos = {
+                x: 0,
+                y: 0
+            };
+            this.valid = false;
+            this.updatePosition = (x, y) => {
+                this.pos.x = x;
+                this.pos.y = y;
+                this.nodeElem.style.left = this.pos.x + "px";
+                this.nodeElem.style.top = this.pos.y + "px";
+            };
+            this.updatePosition();
+
+            this.nodeTop.ondragstart = (e) => {
+                return false;
+            };
+
+            this.nodeTop.onmousedown = (e) => {
+                if (selectedHandle === "")
+                {
+                    //todo fix issue where thing jumps when its moved and has connections
+                    bcr = e.currentTarget.getBoundingClientRect();
+                    selectedNode = [this.id, e.offsetX + bcr.left, e.offsetY + bcr.top];
+                }
+            };
+            
+            document.getElementById(this.id + "name").innerText = this.title;
+
+            // these 2 for loops create the html elements for the connectors
+            for (const property in this.inputs){
+                if(this.inputs[property] != null)
+                {
+                    var handleI = document.createElement("p");
+                    handleI.onmousedown = (e) => {
+                        selectHandle(this.id, property, 'input');
+                        
+                    }
+                    handleI.innerText = "";
+                    handleI.id = this.id + "input" + property;
+                    document.getElementById(this.id + "inputs").append(handleI);
+                }
+                
+            }
+            for (const property in this.outputs){
+                if(this.outputs[property] != null)
+                {
+                    var handleO = document.createElement("p");
+                    handleO.onmousedown = (e) => {
+                        selectHandle(this.id, property, 'output');
+                    }
+                    handleO.innerText = "";
+                    handleO.id = this.id + "output" + property;
+                    document.getElementById(this.id + "outputs").append(handleO);
+                }
+            }
+
+            this.connectTo = (output, node, inputName) => {
+                if (this.outputs[output].connectedNode !== null) this.disconnect(output);
+                //this.func();    // bro wHAT (this is to make sure non triggered things get their additions/multiplications btw)
+                
+                this.outputs[output].connectedNode = node;
+                this.outputs[output].inputName = inputName;
+
+                node.inputs[inputName].connectedNode = this;
+                node.inputs[inputName].number = this.outputs[output].number;
+                node.inputs[inputName].outputName = output;
+
+                //node.inputs[inputName] = this.outputs[output].number;
+            };
+
+            this.disconnect = (output) => {
+                // god this is horrid
+                var outputObject = this.outputs[output];
+                outputObject.connectedNode.inputs[outputObject.inputName] = new Input();
+                //this.outputs[output][1].inputs[this.outputs[output][2]] = this.outputs[output][1].defaultIO[0][this.outputs[output][2]];
+                // outputs.output<x>.connectedNode.inputs<x.input> = connectedNode.defaultInput<x.input> 
+                outputObject.connectionLine.remove();
+                this.outputs[output] = new Output();
+                
+                // 
+            }
+
+            this.trigger = () => {
+                let valid = true;
+                for (const property in this.inputs) {
+                    if (this.inputs[property] !== null){
+                        if (this.inputs[property].number !== 0 && this.inputs[property].connectedNode !== null && this.inputs[property].number.value !== undefined)
+                        {
+                            valid = this.inputs[property].connectedNode.trigger();
+                            if (!valid) return false;
+                        } else {
+                            valid = false;
+                        }
+                        
+                    } 
+                }
+                
+                if(valid) this.func();
+                return valid;
+            };
+        }
+ 
+        function selectHandle(handle, p, t){
+            // handle == node id
+            // p == input/output name/id
+            // t == input or output (string)
+            
+            if(selectedHandle != "") 
+            {
+                if(selectedHandle[2] == t){
+                    //delete(selectedHandle[3]);
+                    //selectedHandle = "";
+                } else if(selectedHandle[2] == "output"){
+                    if (selectedHandle[0] != handle && gameData.nodes[handle].inputs[p].connectedNode == null){
+                        // makes it connect to the other node
+                        gameData.nodes[selectedHandle[0]].connectTo(selectedHandle[1], gameData.nodes[handle], p);
+                        gameData.nodes[selectedHandle[0]].outputs[selectedHandle[1]].connectionLine = selectedHandle[3];
+                        document.removeEventListener("mousemove", myListener);
+                        selectedHandle = "";
+                    }
+                }
+            } else {
+                if (gameData.nodes[handle].outputs[p].connectionLine !== null)
+                {
+
+                    gameData.nodes[handle].disconnect(p);
+
+                }
+                var par = document.getElementById("nodeLines");
+                var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                var startPos = document.getElementById(handle + t + p).getBoundingClientRect();
+                line.setAttribute("x1", Math.round(startPos.left));
+                line.setAttribute("y1", Math.round(startPos.top  - (startPos.height)));
+                line.setAttribute("stroke", "black");
+                line.setAttribute("stroke-width", "2");
+                par.append(line);
+                par = par.getBoundingClientRect();
+
+                document.addEventListener("mousemove", myListener = (e) => {
+                    line.setAttribute("x2", e.clientX - par.x);
+                    line.setAttribute("y2", e.clientY - par.y);
+                });
+
+                selectedHandle = [handle, p, t, line];
+            }
+        }
+
+        function retriggerLoop() {
+            if (gameData.retriggerTime > 0){
+                try {
+                    eNode.trigger();
+                } catch (err) {
+
+                }
+            }
+            setTimeout(retriggerLoop, gameData.retriggerTime);
+        }
+
+        function gameLoop(){
+            
+            document.getElementById('number').innerHTML = "$" + (gameData.currentValue.value.toFixed(2)).toString() + '<span id="name"> ' + magnitudes[Math.round(gameData.currentValue.exponent/3)][1] + "</span>";
+
+            setTimeout(gameLoop, 10);
+        }
+
+        function Output(v, e) {
+
+            // Returns a basic output structure
+
+            if (v === undefined) {
+                return {
+                    number: new Number(),
+                    connectedNode: null,
+                    inputName: null,
+                    connectionLine: null
+                };
+            } else {
+                return {
+                    number: new Number(v, e),
+                    connectedNode: null,
+                    inputName: null,
+                    connectionLine: null
+                };
+            }
+        }
+
+        function Input() {
+            return {
+                number: 0,
+                connectedNode: null,
+                outputName: null,
+            };
+        }
+
+        function buyNode(shopName)
+        {
+            if(curNodeCount != gameData.maxNodes)
+            {
+                tnode = gameData.shop[shopName];
+                if(gameData.currentValue.greaterThanE(tnode.price.value, tnode.price.exponent)) {
+                    gameData.currentValue.subE(tnode.price.value, tnode.price.exponent);
+                    tnode.onbuy();
+                }
+            }
+        }
+
+        window.onload = () => {
+            //Make shop
+            for (const item in gameData.shop)
+            {
+                ns = document.getElementById("nodeShop");
+                buyLink = document.createElement("a");
+                buyLink.onclick = () => {buyNode(item);};
+                buyLink.innerText = gameData.shop[item].price.value + " -- " + item;
+                ns.append(buyLink);
+                
+            }
+            document.onmousemove = (e) => {
+
+                if (selectedNode !== "")
+                {
+                    targ = gameData.nodes[selectedNode[0]];
+                    //targ.pos.x = e.clientX;// - selectedNode[1];
+                    //targ.pos.y = e.clientY;// - selectedNode[2];
+                    targ.updatePosition(e.clientX, e.clientY);
+
+                    for (let input in targ.inputs) {
+                        if (targ.inputs[input] !== null && targ.inputs[input].connectedNode !== null) {
+                            
+                            var startPos = document.getElementById(targ.id + "input" + input).getBoundingClientRect();
+                            var outputN = targ.inputs[input].connectedNode.outputs[targ.inputs[input].outputName];
+                            outputN.connectionLine.setAttribute("x2", Math.round(startPos.left));
+                            outputN.connectionLine.setAttribute("y2", Math.round(startPos.top  - (startPos.height)));
+
+                        }
+                    }
+
+                    for (let output in targ.outputs) {
+
+                        if (targ.outputs[output] !== null && targ.outputs[output].connectionLine !== null) {
+                            var startPos = document.getElementById(targ.id + "output" + output).getBoundingClientRect();
+                            //var output = this.inputs[input].connectedNode.outputs[this.inputs[input].outputName];
+                            targ.outputs[output].connectionLine.setAttribute("x1", Math.round(startPos.left));
+                            targ.outputs[output].connectionLine.setAttribute("y1", Math.round(startPos.top  - (startPos.height)));
+
+                        }
+                    }
+
+                }
+            };
+
+            document.onmousedown = (e) => {
+                
+            };
+
+            document.onmouseup = (e) => {
+                selectedNode = "";
+                if(selectedHandle != "" && e.button == 2){
+                    selectedHandle[3].remove();
+                    document.removeEventListener("mousemove", myListener);
+                    selectedHandle = "";
+                }
+            };
+
+            sNode = new Node(
+                "StartNode",
+                {
+                    "Input": null,
+                },
+                {
+                    "Output": new Output(0.01, 0)
+                },
+                function x(){
+                    this.outputs.Output.number.value = 0.01; //gameData.currentValue.value;
+                    this.outputs.Output.number.exponent = 0; //gameData.currentValue.exponent;
+                }
+            );
+            sNode.updatePosition(250, 250);
+
+            /*new Node(
+                "FlatOne",
+                {
+                    "Input": null,
+                },
+                {
+                    "Output": new Output(1, 0)
+                },
+                function x(){
+                    this.outputs.Output.number.value = 1; //gameData.currentValue.value;
+                    this.outputs.Output.number.exponent = 0; //gameData.currentValue.exponent;
+                }
+            );
+
+
+            new Node(
+                "AddOne",
+                {
+                    "Input": new Input(),
+                },
+                {
+                    "Output": new Output()
+                },
+                function x(){
+                    this.inputs.Input.number.addE(1, 0, "AddOne1");
+
+                    this.outputs.Output.number.value = this.inputs.Input.number.value;
+                    this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                }
+            );
+
+            new Node(
+                "AddOne",
+                {
+                    "Input": new Input(),
+                },
+                {
+                    "Output": new Output()
+                },
+                function x(){
+                    this.inputs.Input.number.addE(1, 0, "AddOne2");
+
+                    this.outputs.Output.number.value = this.inputs.Input.number.value;
+                    this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                }
+            );
+
+            new Node(
+                "2xMultiply",
+                {
+                    "Input": new Input(),
+                },
+                {
+                    "Output": new Output()
+                },
+                function x(){
+                    this.inputs.Input.number.multE(2, 0);
+
+                    this.outputs.Output.number.value = this.inputs.Input.number.value;
+                    this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                }
+            );
+
+            new Node(
+                "Multiply2",
+                {
+                    "Input": new Input(),
+                    "Input2": new Input(),
+                },
+                {
+                    "Output": new Output()
+                },
+                function x(){
+                    this.inputs.Input.number.multE(this.inputs.Input2.number.value, this.inputs.Input2.number.exponent);
+
+                    this.outputs.Output.number.value = this.inputs.Input.number.value;
+                    this.outputs.Output.number.exponent = this.inputs.Input.number.exponent;
+                }
+            );*/
+
+            eNode = new Node(
+                "EndNode",
+                {
+                    "Input": new Input()
+                },
+                {
+                    "Output": null
+                },
+                function x(){
+                    if (this.inputs.Input.number != 0){
+                        gameData.currentValue.addE(this.inputs.Input.number.value, this.inputs.Input.number.exponent, "EndNode");
+                    }
+                    
+                    
+                    //gameData.currentValue.value = this.inputs.Input.value;
+                    //gameData.currentValue.exponent = this.inputs.Input.exponent;
+                    //gameData.currentValue.normalize();
+                }
+            );
+            eNode.updatePosition(650,300);
+            document.getElementById("triggerButton").onclick = () => {
+                eNode.trigger();
+                
+            };
+            gameLoop();
+            retriggerLoop();
+        };
+    </script>
+</head>
+<body>
+    <svg id="nodeLines" width="1920" height="1080" style="position:absolute;z-index:-1;overflow:hidden;"></svg>
+    <div id="container">
+        <h1 id="number">span id="name"></span></h1>
+        <input type="button" value="Trigger" onclick="" id="triggerButton">
+        <div id="tutorial">MoneyPrinter: Start by clicking on the yellow output of StartNode and clicking the green input of EndNode to attach them. Then hit the trigger button.</div>
+    </div>
+    <div id="nodeContainer" style="width:1920px;height:1080px;" oncontextmenu="return false;">
+        
+    </div>
+    <div id="nodeShop">
+
+    </div>
+</body>
