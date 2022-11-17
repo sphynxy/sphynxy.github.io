@@ -247,7 +247,15 @@
                 z-index:1000;
                 background: #111;
             }
-            #page2 h2{
+            #page20 {
+                position: absolute;
+                width: 100vw;
+                height: 100vh;
+                top: 0;
+                left: 0;
+                z-index:1000;
+            }
+            #page2 h2, #page20 h2{
                 top:25vh;
             }
             @keyframes blink {
@@ -356,10 +364,10 @@
             }
 
             function aevent(){
-                document.getElementById("page2").style.display = 'block';
+                document.getElementById("page20").style.display = 'block';
                 document.getElementById("mainaudio").pause();
                 document.getElementById("taudio").play();
-                window.setInterval(() => {document.getElementById("flashtext").innerHTML = "WHAM WARNING"}, 1171);
+                window.setInterval(() => {document.getElementById("flashtext").innerHTML = "LOL NICE TRY LMAO"}, 1171);
                 //setTimeout(function () {document.getElementById("vaudio").play()}, 5000);
             }
             function bevent(){
@@ -503,7 +511,7 @@
                         document.getElementById("time").innerHTML = `${time.toUpperCase()}<br>${date.toUpperCase().replace(',', '')}`;
                     }, 500);
                 window.setInterval(changePage, 20000);
-                //setTimeout(aevent, 5000);
+                setTimeout(aevent, 5000);
                 //setTimeout(bevent, 60000);
             }
             window.onload = init;
@@ -516,6 +524,9 @@
             <h2 style="margin: 0 auto; text-align: center;">Osean Weather Service</h2>
             <h2 style="margin: 0 auto; text-align: center;">issued a</h2>
             <h2 style="margin: 0 auto; text-align:center" id="flashtext">Blizzard Warning</h2>
+        </div>
+        <div id="page20" style="display:none;">
+            <h2 style="margin: 0 auto; text-align:center" id="flashtext">wait whats this?</h2>
         </div>
         <div id="header">
             <div id="wslogo">
