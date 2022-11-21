@@ -287,6 +287,10 @@
         </style >
 
         <audio src="weather/dhr.mp3" controls autoplay style="position:absolute;" id="mainaudio"></audio>
+        <audio src="weather/pw.mp3" id="pw"></audio>
+        <audio src="weather/irene.mp3" id="irene"></audio>
+        <audio src="weather/eotn.mp3" id="eotn"></audio>
+
         <audio src="yes.mp3" id="taudio"></audio>
         <audio src="voc.mp3" id="vaudio"></audio>
 
@@ -429,6 +433,12 @@
             }
 
             function init(){
+                /*randomsong
+                */
+
+                document.getElementById("mainaudio").pause();
+                songs = ["mainaudio", "eotn", "pw", "irene"];
+                document.getElementById(songs[Math.floor(Math.random() * songs.length)]).play();
                 /*
                 radar segment
                 */
@@ -507,7 +517,7 @@
 
 
                 changePage();
-                
+
                 //const audio = document.querySelector("audio");
                 //audio.play();
                 
