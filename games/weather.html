@@ -290,6 +290,9 @@
         <audio src="yes.mp3" id="taudio"></audio>
         <audio src="voc.mp3" id="vaudio"></audio>
 
+        <audio src="weather/currentregional.wav" id="curreg"></audio>
+        <audio src="weather/localradar.wav" id="locrad"></audio>
+
         <script type="text/javascript">
             /////////////////////////////////////////////////////
             var pages = {
@@ -310,7 +313,8 @@
                         'background': '',
                         'animation': '',
                         'boxShadow': '',
-                        'active': 0
+                        'active': 0,
+                        'audio': 'curreg',
                     },
                     {
                         'id': 'page3',
@@ -318,7 +322,8 @@
                         'background': '',
                         'animation': '',
                         'boxShadow': '',
-                        'active': 0
+                        'active': 0,
+                        'audio': 'locrad'
                     }
                 ]
             };
@@ -395,6 +400,11 @@
                 document.getElementById(pages.pages[pages.currentActive].id).style.animation = pages.pages[pages.currentActive].animation;
 
                 pages.pages[pages.currentActive].active = 1;
+                if(pages.pages[pages.currentActive].audio != "")
+                {
+                    //document.getElementById("mainaudio").pause();
+                    document.getElementById(pages.pages[pages.currentActive].audio).play();
+                }
                 pages.pages.map((x) => {
                     document.getElementById(x.id).style.display = x.active == 1 ? pages.pages[pages.currentActive].defaultDisplay : 'none';
                     x.active = 0;
@@ -496,7 +506,8 @@
                 //ctx.putImageData(imgData,0,0);
 
 
-                changePage();changePage();
+                changePage();
+                
                 //const audio = document.querySelector("audio");
                 //audio.play();
                 
@@ -511,7 +522,7 @@
                         document.getElementById("time").innerHTML = `${time.toUpperCase()}<br>${date.toUpperCase().replace(',', '')}`;
                     }, 500);
                 window.setInterval(changePage, 20000);
-                setTimeout(aevent, 5000);
+                //setTimeout(aevent, 5000);
                 //setTimeout(bevent, 60000);
             }
             window.onload = init;
