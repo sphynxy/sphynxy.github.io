@@ -238,10 +238,10 @@
                 top: 0;
                 transform: translateX(40%) translateY(600%);
             }
-            #page2 {
+            #page2, #page2alt {
                 position: absolute;
                 width: 100vw;
-                height: 100vh;
+                height: 200vh;
                 top: 0;
                 left: 0;
                 z-index:1000;
@@ -259,7 +259,10 @@
                 top:25vh;
             }
             @keyframes blink {
-                to {
+                90% {
+                    visibility:visible;
+                }
+                100% {
                     visibility: hidden;
                 }
             }
@@ -277,7 +280,7 @@
                 }
             }
             #radar {
-                background-image: url("weather/mapserv.png");
+                background-image: url("weather/mapserv2.png");
                 margin: 0 auto;
                 width:50vh;
                 height: 50vh;
@@ -290,6 +293,7 @@
         <audio src="weather/pw.mp3" id="pw"></audio>
         <audio src="weather/irene.mp3" id="irene"></audio>
         <audio src="weather/eotn.mp3" id="eotn"></audio>
+        <audio src="weather/webamb.mp3" id="webm"></audio>
 
         <audio src="yes.mp3" id="taudio"></audio>
         <audio src="voc.mp3" id="vaudio"></audio>
@@ -299,6 +303,7 @@
 
         <script type="text/javascript">
             /////////////////////////////////////////////////////
+            currently_playing = "";
             var pages = {
                 'currentActive': -1,
                 'pages': [
@@ -385,6 +390,14 @@
                 document.getElementById("mainaudio").play();
             }
 
+            function cevent(){
+                document.getElementById("page2alt").style.display = 'block';
+                document.getElementById(currently_playing).pause();
+                document.getElementById("webm").play();
+                document.getElementById("scroll-text").innerText = "";
+                //document.getElementById("mainaudio").play();
+            }
+
             var _styleCache;
             function changePage(){
                 //
@@ -438,7 +451,8 @@
 
                 document.getElementById("mainaudio").pause();
                 songs = ["mainaudio", "eotn", "pw", "irene"];
-                document.getElementById(songs[Math.floor(Math.random() * songs.length)]).play();
+                currently_playing = songs[Math.floor(Math.random() * songs.length)];
+                document.getElementById(currently_playing).play();
                 /*
                 radar segment
                 */
@@ -534,6 +548,7 @@
                 window.setInterval(changePage, 20000);
                 //setTimeout(aevent, 5000);
                 //setTimeout(bevent, 60000);
+                //setTimeout(cevent, 4000);
             }
             window.onload = init;
         </script>
@@ -546,6 +561,12 @@
             <h2 style="margin: 0 auto; text-align: center;">issued a</h2>
             <h2 style="margin: 0 auto; text-align:center" id="flashtext">Blizzard Warning</h2>
         </div>
+        <div id="page2alt" style="display:none;position:absolute;">
+            <h2 style="margin: 0 auto; text-align: center;"></h2>
+            <h2 style="margin: 0 auto; text-align: center;"></h2>
+            <h2 style="margin: 0 auto; text-align: center;"></h2>
+            <h2 style="margin: 0 auto; text-align:center" id="flashtext"></h2>
+        </div>
         <div id="page20" style="display:none;">
             <h2 style="margin: 0 auto; text-align:center" id="flashtext">wait whats this?</h2>
         </div>
@@ -554,7 +575,7 @@
                 <h1>
                     THE<br>
                     WEATHER<br>
-                    STATION<br>
+                    <span id="sbut" onclick="cevent();">S</span>TATION<br>
                 </h1>
             </div>
 
@@ -598,8 +619,8 @@
                             </canvas>
                         </div>
                         
-                        <h2 id="nfw" style="position:relative;bottom:45%;left: 33%;font-size: 125%;">NFW<br><span style="color:rgb(255, 238, 0);top: -0.7vh;position: relative;">12<img src="weather/icons/Flurries.gif" style="width:1em;height:1em;top: 0.2vh;position: relative;"></span></h2>
-                        <h2 id="shj" style="position:relative;bottom:60%;left: 39%;font-size: 125%;">SHJ<br><span style="color:rgb(255, 238, 0);top: -0.7vh;position: relative;">10<img src="weather/icons/Snow.gif" style="width:1em;height:1em;top: 0.2vh;position: relative;"></span></h2>
+                        <h2 id="nfw" style="position:relative;bottom:76%;left: 55%;font-size: 125%;">NFW<br><span style="color:rgb(255, 238, 0);top: -0.7vh;position: relative;">12<img src="weather/icons/Flurries.gif" style="width:1em;height:1em;top: 0.2vh;position: relative;"></span></h2>
+                        <h2 id="shj" style="position:relative;bottom:96%;left: 50%;font-size: 125%;">SHJ<br><span style="color:rgb(255, 238, 0);top: -0.7vh;position: relative;">10<img src="weather/icons/Snow.gif" style="width:1em;height:1em;top: 0.2vh;position: relative;"></span></h2>
                     </div>
                 </div>
 
